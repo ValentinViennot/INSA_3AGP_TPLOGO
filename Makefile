@@ -14,10 +14,10 @@ all: ${EXEC}
 exe: ${EXEC} clean
 
 ${EXEC}: $(SRCS_COMMONS:.c=.o) $(SRCS_LOGO:.c=.o) ${HDRS_COMMONS} ${HDRS_LOGO}
-	${CC} ${LDFLAGS} $^ -o $@
+	${CC} $^ -o $@ ${LDFLAGS}
 
 test: $(SRCS_COMMONS:.c=.o) $(SRCS_TEST:.c=.o) ${HDRS_COMMONS}
-	${CC} ${LDFLAGS} $^ -o $@
+	${CC} $^ -o $@ ${LDFLAGS}
 
 %.o: %.c
 	${CC} ${CFLAGS} $< -o $@

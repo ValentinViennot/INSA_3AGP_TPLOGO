@@ -8,10 +8,10 @@ void rotatePen(Pen* pen, Instruction sig, int dalpha) {
   double da = getInRadians(dalpha);
   switch (sig) {
     case LEFT:
-      pen->alpha += da;
+      pen->alpha -= da;
       break;
     case RIGHT:
-      pen->alpha -= da;
+      pen->alpha += da;
       break;
     default:
       perror("Bad usage of rotatePen !");
