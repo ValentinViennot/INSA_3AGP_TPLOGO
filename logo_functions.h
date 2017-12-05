@@ -3,7 +3,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "logo_type.h"
+#include "pen.h"
 
 /**
 * \brief Init a new Logo Program structure
@@ -34,7 +36,7 @@ void addNode(Program* program, Node* node);
 */
 void printLogo(Program program, int indent);
 
-void writeSVG(Program program);
+void writeSVG(Program program, char* name);
 
 
 #endif

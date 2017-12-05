@@ -20,6 +20,8 @@ int main(int argc, char const *argv[]) {
 
   printLogo(myLogo,0);
 
+  writeSVG(myLogo,"svg.svg");
+
   freeLogo(&myLogo);
 
   return 0;

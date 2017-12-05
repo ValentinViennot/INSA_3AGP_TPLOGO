@@ -1,8 +1,8 @@
 EXEC = logo
-SRCS_COMMONS = logo_functions.c
+SRCS_COMMONS = logo_functions.c pen.c
 SRCS_LOGO = ${EXEC}.tab.c lex.yy.c
 SRCS_TEST = test.c
-HDRS_COMMONS = logo_type.h logo_functions.h
+HDRS_COMMONS = logo_type.h logo_functions.h pen.h
 HDRS_LOGO = ${EXEC}.tab.h
 
 CC = gcc
