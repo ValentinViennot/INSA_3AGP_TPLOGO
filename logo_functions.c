@@ -103,6 +103,9 @@ void writeSVG(Program program, char* name) {
     fprintf(svg,"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"300\" height=\"200\">\n");
     fprintf(svg,"<title>%s</title>\n",name);
     Pen pen;
+    pen.x = 50.0;
+    pen.y = 50.0;
+    pen.alpha = 0.0;
     writeSVGInstruction(svg,program,&pen);
     fprintf(svg,"</svg>\n");
     fclose(svg);

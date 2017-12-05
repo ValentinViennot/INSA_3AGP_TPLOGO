@@ -7,6 +7,7 @@ HDRS_LOGO = ${EXEC}.tab.h
 
 CC = gcc
 CFLAGS += -c -g -Wall
+LDFLAGS += -lm
 
 all: ${EXEC}
 

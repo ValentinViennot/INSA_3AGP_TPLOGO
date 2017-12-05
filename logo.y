@@ -31,6 +31,7 @@
 FINAL: PROGRAM
   {
     printLogo($1,0);
+    writeSVG($1,"yacc.svg");
     freeLogo(&$1);
   }
 
