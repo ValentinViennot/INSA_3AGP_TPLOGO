@@ -61,11 +61,12 @@ INSTRUCTION:
   }
   | REPEAT_ VALUE '[' PROGRAM ']'
   {
-    $$=createNode(REPEAT,$2,&$4);
+    $$=createNode(REPEAT,$2,$4);
   }
 
 %%
 
 int main() {
   yyparse();
+  return 0;
 }

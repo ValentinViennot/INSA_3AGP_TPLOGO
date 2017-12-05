@@ -21,7 +21,7 @@ void freeLogo(Program* program);
 * \param value Int value associated to Node
 * \result Return a pointer to the newly created Node
 */
-Node* createNode(Instruction instruction, int value, Program* subNode);
+Node* createNode(Instruction instruction, int value, Program subNode);
 
 /**
 * \brief Append a new Node at the end of the Program
@@ -33,6 +33,8 @@ void addNode(Program* program, Node* node);
 * \param indent Spacing
 */
 void printLogo(Program program, int indent);
+
+void writeSVG(Program program);
 
 
 #endif

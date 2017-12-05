@@ -4,7 +4,7 @@ Program InitLogo() {
   return NULL;
 }
 
-Node* createNode(Instruction instruction, int value, Program* subNode) {
+Node* createNode(Instruction instruction, int value, Program subNode) {
   Node* node = (Node*)malloc(sizeof(Node));
   node->instruction = instruction;
   node->value = value;
@@ -16,7 +16,7 @@ Node* createNode(Instruction instruction, int value, Program* subNode) {
 void freeLogo(Program* program) {
   if (*program == NULL)
     return;
-  if ((*program)->subNode != NULL) freeLogo((*program)->subNode);
+  freeLogo(&((*program)->subNode));
   freeLogo(&((*program)->next));
   free(*program);
 }
@@ -47,7 +47,7 @@ void printLogo(Program program, int indent) {
       break;
     case REPEAT:
       printf("REPEAT %d [\n", program->value);
-      printLogo(*(program->subNode), indent+1);
+      printLogo(program->subNode, indent+1);
       for (i=0;i<indent;++i)
         printf("\t");
       printf("]");

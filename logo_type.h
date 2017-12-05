@@ -12,7 +12,7 @@ typedef struct model_step {
   Instruction instruction;
   int value;
   struct model_step* next;
-  struct model_step** subNode;
+  struct model_step* subNode;
 } Node;
 
 typedef Node* Program;
