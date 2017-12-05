@@ -31,6 +31,7 @@
 FINAL: PROGRAM
   {
     printLogo($1,0);
+    freeLogo(&$1);
   }
 
 PROGRAM:

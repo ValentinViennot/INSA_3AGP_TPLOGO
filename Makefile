@@ -6,7 +6,7 @@ HDRS_COMMONS = logo_type.h logo_functions.h
 HDRS_LOGO = ${EXEC}.tab.h
 
 CC = gcc
-CFLAGS += -c
+CFLAGS += -c -g -Wall
 
 all: ${EXEC}
 

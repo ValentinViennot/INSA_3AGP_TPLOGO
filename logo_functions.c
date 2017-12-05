@@ -13,6 +13,14 @@ Node* createNode(Instruction instruction, int value, Program* subNode) {
   return node;
 }
 
+void freeLogo(Program* program) {
+  if (*program == NULL)
+    return;
+  if ((*program)->subNode != NULL) freeLogo((*program)->subNode);
+  freeLogo(&((*program)->next));
+  free(*program);
+}
+
 void addNode(Program* program, Node* node) {
   if (*program == NULL) {
     *program = node;

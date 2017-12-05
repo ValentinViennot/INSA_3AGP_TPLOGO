@@ -11,8 +11,14 @@
 Program InitLogo();
 
 /**
+* \brief Free memory allocated for Nodes
+*/
+void freeLogo(Program* program);
+
+/**
 * \brief Malloc and populate a new Node
 * \param instruction Type of Instruction
+* \param value Int value associated to Node
 * \result Return a pointer to the newly created Node
 */
 Node* createNode(Instruction instruction, int value, Program* subNode);
