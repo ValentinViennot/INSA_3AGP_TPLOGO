@@ -62,9 +62,10 @@ void printLogo(Program program, int indent) {
 void writeSVGLine(FILE* svg, double x, double y, Pen pen) {
   fprintf(
     svg,
-    "<line x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" stroke=\"black\" />\n",
+    "<line x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" stroke=\"#%s\" />\n",
     x,y,
-    pen.x,pen.y
+    pen.x,pen.y,
+    pen.color
   );
 }
 
@@ -89,10 +90,40 @@ void writeSVGInstruction(FILE* svg, Program program, Pen* pen) {
         writeSVGInstruction(svg,program->subNode,pen);
       }
       break;
+    case COLOR:
+      
+      break;
     default:
       perror("Instruction non identifiée !");
   }
   writeSVGInstruction(svg,program->next,pen);
+}
+
+void defineCanvas(Program program, Pen* pen, double* initX, double* initY, double* sizeX, double* sizeY) {
+  if (program == NULL)
+    return;
+  int i;
+  switch (program->instruction) {
+    case FORWARD:
+      movePen(pen,program->value);
+      *initX = min(*initX,pen->x);
+      *initY = min(*initY,pen->y);
+      *sizeX = max(*sizeX,pen->x);
+      *sizeY = max(*sizeY,pen->y);
+      break;
+    case LEFT:
+    case RIGHT:
+      rotatePen(pen,program->instruction,program->value);
+      break;
+    case REPEAT:
+      for (i=0;i<program->value;++i) {
+        defineCanvas(program->subNode,pen,initX,initY,sizeX,sizeY);
+      }
+      break;
+    default:
+      perror("Instruction non identifiée !");
+  }
+  defineCanvas(program->next,pen,initX,initY,sizeX,sizeY);
 }
 
 void writeSVG(Program program, char* name) {
@@ -100,12 +131,17 @@ void writeSVG(Program program, char* name) {
     // write svg headers
     fprintf(svg,"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
     // TODO Calculer la taille du dessin ! (et centrer le Pen ?)
-    fprintf(svg,"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"300\" height=\"200\">\n");
-    fprintf(svg,"<title>%s</title>\n",name);
     Pen pen;
-    pen.x = 50.0;
-    pen.y = 50.0;
+    double x=0,y=0,sizex=0,sizey=0;
+    pen.x = x;
+    pen.y = y;
     pen.alpha = 0.0;
+    defineCanvas(program,&pen,&x,&y,&sizex,&sizey);
+    pen.x = -x;
+    pen.y = -y;
+    pen.alpha = 0.0;
+    fprintf(svg,"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"%d\" height=\"%d\">\n",(int)(-x+sizex),(int)(-y+sizey));
+    fprintf(svg,"<title>%s</title>\n",name);
     writeSVGInstruction(svg,program,&pen);
     fprintf(svg,"</svg>\n");
     fclose(svg);
