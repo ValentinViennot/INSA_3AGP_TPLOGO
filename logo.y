@@ -13,26 +13,35 @@
 
 %}
 
+%token NAME_
 %token VALUE SIGNED
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ NAME
 
 //type de yylval
 %union {
+    char name[50];
     struct model_step* node;
     int value;
  };
 
 //type des  symboles
+%type <name> NAME_ // char*
 %type <value> VALUE COLOR_ SIGNED // int
-%type <node> INSTRUCTION PROGRAM // *Node
+%type <node> INSTRUCTION PROGRAM // Node*
 
 %%
 
-FINAL: PROGRAM
-  {
+FINAL:
+  PROGRAM {
     printLogo($1,0);
-    writeSVG($1,"yacc.svg");
+    writeSVG($1,"out.svg");
     freeLogo(&$1);
+  }
+  | NAME NAME_ PROGRAM
+  {
+    printLogo($3,0);
+    writeSVG($3,$2);
+    freeLogo(&$3);
   }
 
 PROGRAM:
