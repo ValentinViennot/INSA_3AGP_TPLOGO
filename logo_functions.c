@@ -29,6 +29,25 @@ void addNode(Program* program, Node* node) {
   }
 }
 
+char* getInstructionColorName(Instruction instruction)  {
+  switch (instruction) {
+    case COLORR:
+      return "RED";
+    case DCOLORR:
+      return "DELTA RED";
+    case COLORG:
+      return "GREEN";
+    case DCOLORG:
+      return "DELTA GREEN";
+    case COLORB:
+      return "BLUE";
+    case DCOLORB:
+      return "DELTA BLUE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 void printLogo(Program program, int indent) {
   if (program == NULL)
     return;
@@ -52,11 +71,9 @@ void printLogo(Program program, int indent) {
         printf("\t");
       printf("]");
       break;
+    case DCOLORR: case DCOLORG: case DCOLORB:
     case COLORR: case COLORG: case COLORB:
-      printf("COLOR %s %d",
-        program->instruction == COLORR ? "RED" :
-        program->instruction == COLORG ? "GREEN":"BLUE"
-      ,program->value);
+      printf("COLOR %s %d",getInstructionColorName(program->instruction),program->value);
       break;
     case HIDE:
       printf("HIDE %d", program->value);
@@ -101,6 +118,7 @@ void writeSVGInstruction(FILE* svg, Program program, Pen* pen) {
       break;
     case HIDE:
       pen->active = 1 - program->value;
+      break;
     case COLORR:
       pen->red = program->value;
       break;
@@ -109,6 +127,15 @@ void writeSVGInstruction(FILE* svg, Program program, Pen* pen) {
       break;
     case COLORB:
       pen->blue = program->value;
+      break;
+    case DCOLORR:
+      pen->red += program->value;
+      break;
+    case DCOLORG:
+      pen->green += program->value;
+      break;
+    case DCOLORB:
+      pen->blue += program->value;
       break;
     default:
       perror("Instruction non identifiée !");

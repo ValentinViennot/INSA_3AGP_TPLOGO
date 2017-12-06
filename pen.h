@@ -18,6 +18,7 @@ typedef struct {
   // radius in radians
   double alpha;
   // color
+  int rgb[3];
   int red, green, blue;
 } Pen;
 

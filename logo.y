@@ -68,6 +68,7 @@ INSTRUCTION:
   {
     $$=createNode(HIDE,$2,NULL);
   }
+  // TODO généraliser les couleurs !
   | RED VALUE
   {
     $$=createNode(COLORR,$2,NULL);
@@ -79,6 +80,30 @@ INSTRUCTION:
   | BLUE VALUE
   {
     $$=createNode(COLORB,$2,NULL);
+  }
+  | RED '+'VALUE
+  {
+    $$=createNode(DCOLORR,$3,NULL);
+  }
+  | GREEN '+'VALUE
+  {
+    $$=createNode(DCOLORG,$3,NULL);
+  }
+  | BLUE '+'VALUE
+  {
+    $$=createNode(DCOLORB,$3,NULL);
+  }
+  | RED '-'VALUE
+  {
+    $$=createNode(DCOLORR,-$3,NULL);
+  }
+  | GREEN '-'VALUE
+  {
+    $$=createNode(DCOLORG,-$3,NULL);
+  }
+  | BLUE '-'VALUE
+  {
+    $$=createNode(DCOLORB,-$3,NULL);
   }
 
 %%
