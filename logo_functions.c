@@ -52,6 +52,15 @@ void printLogo(Program program, int indent) {
         printf("\t");
       printf("]");
       break;
+    case COLORR: case COLORG: case COLORB:
+      printf("COLOR %s %d",
+        program->instruction == COLORR ? "RED" :
+        program->instruction == COLORG ? "GREEN":"BLUE"
+      ,program->value);
+      break;
+    case HIDE:
+      printf("HIDE %d", program->value);
+      break;
     default:
       printf("UNKNOWN %d", program->value);
   }
@@ -62,10 +71,10 @@ void printLogo(Program program, int indent) {
 void writeSVGLine(FILE* svg, double x, double y, Pen pen) {
   fprintf(
     svg,
-    "<line x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" stroke=\"#%s\" />\n",
+    "<line x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" stroke=\"#%02X%02X%02X\" />\n",
     x,y,
     pen.x,pen.y,
-    pen.color
+    pen.red,pen.green,pen.blue
   );
 }
 
@@ -79,7 +88,7 @@ void writeSVGInstruction(FILE* svg, Program program, Pen* pen) {
       xOld = pen->x;
       yOld = pen->y;
       movePen(pen,program->value);
-      writeSVGLine(svg,xOld,yOld,*pen);
+      if (pen->active) writeSVGLine(svg,xOld,yOld,*pen);
       break;
     case LEFT:
     case RIGHT:
@@ -90,8 +99,16 @@ void writeSVGInstruction(FILE* svg, Program program, Pen* pen) {
         writeSVGInstruction(svg,program->subNode,pen);
       }
       break;
-    case COLOR:
-      
+    case HIDE:
+      pen->active = 1 - program->value;
+    case COLORR:
+      pen->red = program->value;
+      break;
+    case COLORG:
+      pen->green = program->value;
+      break;
+    case COLORB:
+      pen->blue = program->value;
       break;
     default:
       perror("Instruction non identifiée !");
@@ -121,7 +138,7 @@ void defineCanvas(Program program, Pen* pen, double* initX, double* initY, doubl
       }
       break;
     default:
-      perror("Instruction non identifiée !");
+      break;
   }
   defineCanvas(program->next,pen,initX,initY,sizeX,sizeY);
 }
@@ -132,10 +149,8 @@ void writeSVG(Program program, char* name) {
     fprintf(svg,"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
     // TODO Calculer la taille du dessin ! (et centrer le Pen ?)
     Pen pen;
+    InitPen(&pen);
     double x=0,y=0,sizex=0,sizey=0;
-    pen.x = x;
-    pen.y = y;
-    pen.alpha = 0.0;
     defineCanvas(program,&pen,&x,&y,&sizex,&sizey);
     pen.x = -x;
     pen.y = -y;

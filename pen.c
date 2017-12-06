@@ -1,5 +1,15 @@
 #include "pen.h"
 
+void InitPen(Pen* pen) {
+  pen->active = 1;
+  pen->x = 0.0;
+  pen->y = 0.0;
+  pen->alpha = 0.0;
+  pen->red = 0;
+  pen->green = 0;
+  pen->blue = 0;
+}
+
 double getInRadians(int a) {
   return (double)(a * PI / 180.0);
 }

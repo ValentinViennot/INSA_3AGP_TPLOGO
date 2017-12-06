@@ -11,11 +11,17 @@
 #define max(a,b) (((a)>(b))?(a):(b))
 
 typedef struct {
+  // write or not to write ?
+  int active;
   double x;
   double y;
   // radius in radians
   double alpha;
+  // color
+  int red, green, blue;
 } Pen;
+
+void InitPen(Pen* pen);
 
 /**
 * \post pen->alpha += radians(dalpha)

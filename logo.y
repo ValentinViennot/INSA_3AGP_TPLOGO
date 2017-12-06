@@ -14,7 +14,7 @@
 %}
 
 %token VALUE
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ RED GREEN BLUE
 
 //type de yylval
 %union {
@@ -63,6 +63,22 @@ INSTRUCTION:
   | REPEAT_ VALUE '[' PROGRAM ']'
   {
     $$=createNode(REPEAT,$2,$4);
+  }
+  | HIDE_ VALUE
+  {
+    $$=createNode(HIDE,$2,NULL);
+  }
+  | RED VALUE
+  {
+    $$=createNode(COLORR,$2,NULL);
+  }
+  | GREEN VALUE
+  {
+    $$=createNode(COLORG,$2,NULL);
+  }
+  | BLUE VALUE
+  {
+    $$=createNode(COLORB,$2,NULL);
   }
 
 %%
