@@ -13,7 +13,7 @@
 
 %}
 
-%token VALUE
+%token VALUE SIGNED
 %token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_
 
 //type de yylval
@@ -23,7 +23,7 @@
  };
 
 //type des  symboles
-%type <value> VALUE COLOR_ // int
+%type <value> VALUE COLOR_ SIGNED // int
 %type <node> INSTRUCTION PROGRAM // *Node
 
 %%
@@ -70,13 +70,11 @@ INSTRUCTION:
   }
   // TODO généraliser les couleurs !
   | COLOR_ VALUE {
+    while ($2>255) $2-=255;
     $$=createNode(COLOR,$2*10+$1,NULL);
   }
-  | COLOR_ '+'VALUE {
-    $$=createNode(DCOLOR,$3*10+$1,NULL);
-  }
-  | COLOR_ '-'VALUE {
-    $$=createNode(DCOLOR,-($3*10+$1),NULL);
+  | COLOR_ SIGNED VALUE {
+    $$=createNode(DCOLOR,$2*($3*10+$1),NULL);
   }
 
 %%

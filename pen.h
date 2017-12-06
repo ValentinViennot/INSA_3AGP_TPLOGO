@@ -36,4 +36,6 @@ void rotatePen(Pen* pen, Instruction sig, int dalpha);
 */
 void movePen(Pen* pen, int value);
 
+void changePenColor(Pen* pen, int index, int value);
+
 #endif

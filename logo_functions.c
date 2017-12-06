@@ -125,10 +125,18 @@ void writeSVGInstruction(FILE* svg, Program program, Pen* pen) {
       pen->active = 1 - program->value;
       break;
     case COLOR:
-      pen->rgb[getColorIndex(program->value)] = getColorValue(program->value);
+      changePenColor(
+        pen,
+        getColorIndex(program->value),
+        getColorValue(program->value)
+      );
       break;
     case DCOLOR:
-      pen->rgb[getColorIndex(program->value)] += getColorValue(program->value);
+      changePenColor(
+        pen,
+        getColorIndex(program->value),
+        pen->rgb[getColorIndex(program->value)]+getColorValue(program->value)
+      );
       break;
     default:
       perror("Instruction non identifiée !");
@@ -171,11 +179,12 @@ void writeSVG(Program program, char* name) {
     Pen pen;
     InitPen(&pen);
     double x=0,y=0,sizex=0,sizey=0;
+    const double MARGIN = 1;
     defineCanvas(program,&pen,&x,&y,&sizex,&sizey);
-    pen.x = -x;
-    pen.y = -y;
+    pen.x = -x+MARGIN;
+    pen.y = -y+MARGIN;
     pen.alpha = 0.0;
-    fprintf(svg,"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"%d\" height=\"%d\">\n",(int)(-x+sizex),(int)(-y+sizey));
+    fprintf(svg,"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"%d\" height=\"%d\">\n",(int)(-x+sizex+2*MARGIN),(int)(-y+sizey+2*MARGIN));
     fprintf(svg,"<title>%s</title>\n",name);
     writeSVGInstruction(svg,program,&pen);
     fprintf(svg,"</svg>\n");

@@ -14,8 +14,8 @@
 [1-9][0-9]*|0     {yylval.value = atoi(yytext); return VALUE;}
 "["               return '[';
 "]"               return ']';
-"+"               return '+';
-"-"               return '-';
+"+"               {yylval.value = 1; return SIGNED;}
+"-"               {yylval.value = -1; return SIGNED;}
 [ \t]+              ;
 \n                  ;
 
