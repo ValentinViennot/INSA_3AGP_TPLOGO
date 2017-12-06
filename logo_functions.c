@@ -29,23 +29,27 @@ void addNode(Program* program, Node* node) {
   }
 }
 
-char* getInstructionColorName(Instruction instruction)  {
-  switch (instruction) {
-    case COLORR:
+int getColorIndex(int value)  {
+  int color = (int)(value/10);
+  color *= 10;
+  return (value-color);
+}
+
+char* getColorName(int value)  {
+  switch (getColorIndex(value)) {
+    case 0:
       return "RED";
-    case DCOLORR:
-      return "DELTA RED";
-    case COLORG:
+    case 1:
       return "GREEN";
-    case DCOLORG:
-      return "DELTA GREEN";
-    case COLORB:
+    case 2:
       return "BLUE";
-    case DCOLORB:
-      return "DELTA BLUE";
     default:
       return "UNKNOWN";
   }
+}
+
+int getColorValue(int value)  {
+  return (int)(value/10);
 }
 
 void printLogo(Program program, int indent) {
@@ -71,9 +75,10 @@ void printLogo(Program program, int indent) {
         printf("\t");
       printf("]");
       break;
-    case DCOLORR: case DCOLORG: case DCOLORB:
-    case COLORR: case COLORG: case COLORB:
-      printf("COLOR %s %d",getInstructionColorName(program->instruction),program->value);
+    case DCOLOR:
+      printf("DELTA ");
+    case COLOR:
+      printf("COLOR %s %d",getColorName(program->value),getColorValue(program->value));
       break;
     case HIDE:
       printf("HIDE %d", program->value);
@@ -91,7 +96,7 @@ void writeSVGLine(FILE* svg, double x, double y, Pen pen) {
     "<line x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" stroke=\"#%02X%02X%02X\" />\n",
     x,y,
     pen.x,pen.y,
-    pen.red,pen.green,pen.blue
+    pen.rgb[0],pen.rgb[1],pen.rgb[2]
   );
 }
 
@@ -119,23 +124,11 @@ void writeSVGInstruction(FILE* svg, Program program, Pen* pen) {
     case HIDE:
       pen->active = 1 - program->value;
       break;
-    case COLORR:
-      pen->red = program->value;
+    case COLOR:
+      pen->rgb[getColorIndex(program->value)] = getColorValue(program->value);
       break;
-    case COLORG:
-      pen->green = program->value;
-      break;
-    case COLORB:
-      pen->blue = program->value;
-      break;
-    case DCOLORR:
-      pen->red += program->value;
-      break;
-    case DCOLORG:
-      pen->green += program->value;
-      break;
-    case DCOLORB:
-      pen->blue += program->value;
+    case DCOLOR:
+      pen->rgb[getColorIndex(program->value)] += getColorValue(program->value);
       break;
     default:
       perror("Instruction non identifiée !");

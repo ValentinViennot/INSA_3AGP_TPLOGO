@@ -7,8 +7,7 @@ typedef enum {
   RIGHT,
   REPEAT,
   HIDE,
-  COLORR,COLORG,COLORB,
-  DCOLORR,DCOLORG,DCOLORB
+  DCOLOR, COLOR
 } Instruction;
 
 typedef struct model_step {

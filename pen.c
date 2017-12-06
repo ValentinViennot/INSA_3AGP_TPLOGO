@@ -5,9 +5,9 @@ void InitPen(Pen* pen) {
   pen->x = 0.0;
   pen->y = 0.0;
   pen->alpha = 0.0;
-  pen->red = 0;
-  pen->green = 0;
-  pen->blue = 0;
+  pen->rgb[0] = 0;
+  pen->rgb[1] = 0;
+  pen->rgb[2] = 0;
 }
 
 double getInRadians(int a) {

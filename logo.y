@@ -14,7 +14,7 @@
 %}
 
 %token VALUE
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ RED GREEN BLUE
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_
 
 //type de yylval
 %union {
@@ -23,7 +23,7 @@
  };
 
 //type des  symboles
-%type <value> VALUE // int
+%type <value> VALUE COLOR_ // int
 %type <node> INSTRUCTION PROGRAM // *Node
 
 %%
@@ -69,41 +69,14 @@ INSTRUCTION:
     $$=createNode(HIDE,$2,NULL);
   }
   // TODO généraliser les couleurs !
-  | RED VALUE
-  {
-    $$=createNode(COLORR,$2,NULL);
+  | COLOR_ VALUE {
+    $$=createNode(COLOR,$2*10+$1,NULL);
   }
-  | GREEN VALUE
-  {
-    $$=createNode(COLORG,$2,NULL);
+  | COLOR_ '+'VALUE {
+    $$=createNode(DCOLOR,$3*10+$1,NULL);
   }
-  | BLUE VALUE
-  {
-    $$=createNode(COLORB,$2,NULL);
-  }
-  | RED '+'VALUE
-  {
-    $$=createNode(DCOLORR,$3,NULL);
-  }
-  | GREEN '+'VALUE
-  {
-    $$=createNode(DCOLORG,$3,NULL);
-  }
-  | BLUE '+'VALUE
-  {
-    $$=createNode(DCOLORB,$3,NULL);
-  }
-  | RED '-'VALUE
-  {
-    $$=createNode(DCOLORR,-$3,NULL);
-  }
-  | GREEN '-'VALUE
-  {
-    $$=createNode(DCOLORG,-$3,NULL);
-  }
-  | BLUE '-'VALUE
-  {
-    $$=createNode(DCOLORB,-$3,NULL);
+  | COLOR_ '-'VALUE {
+    $$=createNode(DCOLOR,-($3*10+$1),NULL);
   }
 
 %%
