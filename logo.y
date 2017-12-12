@@ -2,7 +2,7 @@
   #include <stdlib.h>
   #include <stdio.h>
   #include <string.h>
-  
+
   #include "logo_type.h"
   #include "logo_functions.h"
 
@@ -20,6 +20,7 @@
 %token NAME_
 %token VALUE DELTA
 %token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ SCALE_ NAME
+%token RECT POLYGON CIRCLE
 
 //type de yylval
 %union {
@@ -60,6 +61,7 @@ PROGRAM:
   }
 
 INSTRUCTION:
+  // Instructions de base
   FORWARD_ VALUE
   {
     $$=createNode(FORWARD,$2,NULL);
@@ -76,20 +78,44 @@ INSTRUCTION:
   {
     $$=createNode(SCALE,$2,NULL);
   }
-  | REPEAT_ VALUE '[' PROGRAM ']'
-  {
-    $$=createNode(REPEAT,$2,$4);
-  }
   | HIDE_ VALUE
   {
     $$=createNode(HIDE,$2,NULL);
   }
+  // Imbrications
+  | REPEAT_ VALUE '[' PROGRAM ']'
+  {
+    $$=createNode(REPEAT,$2,$4);
+  }
+  // Couleur
   | COLOR_ VALUE {
     while ($2>255) $2-=255;
     $$=createNode(COLOR,$2*10+$1,NULL);
   }
   | COLOR_ DELTA VALUE {
     $$=createNode(DCOLOR,$2*($3*10+$1),NULL);
+  }
+  // Alias
+  | RECT VALUE VALUE {
+    Program rect = InitLogo();
+    addNode(&rect,createNode(FORWARD,$2,NULL));
+    addNode(&rect,createNode(RIGHT,90,NULL));
+    addNode(&rect,createNode(FORWARD,$3,NULL));
+    addNode(&rect,createNode(RIGHT,90,NULL));
+    $$=createNode(REPEAT,2,rect);
+  }
+  | POLYGON VALUE VALUE {
+    int angle = (int)(360/$2);
+    Program poly = InitLogo();
+    addNode(&poly,createNode(FORWARD,$3,NULL));
+    addNode(&poly,createNode(RIGHT,angle,NULL));
+    $$=createNode(REPEAT,$2,poly);
+  }
+  | CIRCLE VALUE {
+    Program poly = InitLogo();
+    addNode(&poly,createNode(FORWARD,$2,NULL));
+    addNode(&poly,createNode(RIGHT,1,NULL));
+    $$=createNode(REPEAT,360,poly);
   }
 
 %%

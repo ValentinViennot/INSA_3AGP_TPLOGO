@@ -9,6 +9,9 @@
 "RIGHT"             return RIGHT_;
 "REPEAT"            return REPEAT_;
 "SCALE"            	return SCALE_;
+"RECT"            	return RECT;
+"POLYGON"			return POLYGON;
+"CIRCLE"			return CIRCLE;
 ("COLOR ")?"RED"    {yylval.value = 0; return COLOR_;}
 ("COLOR ")?"GREEN"  {yylval.value = 1; return COLOR_;}
 ("COLOR ")?"BLUE"   {yylval.value = 2; return COLOR_;}
