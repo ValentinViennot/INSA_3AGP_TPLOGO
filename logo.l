@@ -15,11 +15,11 @@
 [1-9][0-9]*|0       {yylval.value = atoi(yytext); return VALUE;}
 "["                 return '[';
 "]"                 return ']';
-"+"                 {yylval.value = 1; return SIGNED;}
-"-"                 {yylval.value = -1; return SIGNED;}
+"+"                 {yylval.value = 1; return DELTA;}
+"-"                 {yylval.value = -1; return DELTA;}
 [ \t]+              ;
 \n                  ;
 "NAME"              return NAME;
-[a-zA-Z0-9]{1,45}".svg" {strcpy(yylval.name,yytext); return NAME_;}
+[a-zA-Z]{1,45}".svg" {strcpy(yylval.name,yytext); return NAME_;}
 
 %%

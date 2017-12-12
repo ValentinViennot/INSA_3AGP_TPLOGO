@@ -14,7 +14,7 @@
 %}
 
 %token NAME_
-%token VALUE SIGNED
+%token VALUE DELTA
 %token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ NAME
 
 //type de yylval
@@ -26,7 +26,7 @@
 
 //type des  symboles
 %type <name> NAME_ // char*
-%type <value> VALUE COLOR_ SIGNED // int
+%type <value> VALUE COLOR_ DELTA // int
 %type <node> INSTRUCTION PROGRAM // Node*
 
 %%
@@ -77,12 +77,11 @@ INSTRUCTION:
   {
     $$=createNode(HIDE,$2,NULL);
   }
-  // TODO généraliser les couleurs !
   | COLOR_ VALUE {
     while ($2>255) $2-=255;
     $$=createNode(COLOR,$2*10+$1,NULL);
   }
-  | COLOR_ SIGNED VALUE {
+  | COLOR_ DELTA VALUE {
     $$=createNode(DCOLOR,$2*($3*10+$1),NULL);
   }
 

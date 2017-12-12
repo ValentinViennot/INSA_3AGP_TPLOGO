@@ -34,9 +34,6 @@ void movePen(Pen* pen, int value) {
 }
 
 void changePenColor(Pen* pen, int index, int value) {
-  // Change
-  pen->rgb[index] = value;
-  // Check Limits
-  while (pen->rgb[index]>255) pen->rgb[index]-=255;
+  pen->rgb[index] = value%256;
   if (pen->rgb[index]<0) pen->rgb[index] = 0;
 }

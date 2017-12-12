@@ -185,6 +185,8 @@ void writeSVG(Program program, char* name) {
     pen.y = -y+MARGIN;
     pen.alpha = 0.0;
     fprintf(svg,"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"%d\" height=\"%d\">\n",(int)(-x+sizex+2*MARGIN),(int)(-y+sizey+2*MARGIN));
+    // Transformons le nom du fichier pour enlever l'extension et le mettre en majuscules
+    if ( name[0] > 96) name[0] = name[0] - 32; // Passons le premier char en majuscules s'il est en minuscules (cf. Table ASCII)
     fprintf(svg,"<title>%s</title>\n",name);
     writeSVGInstruction(svg,program,&pen);
     fprintf(svg,"</svg>\n");
