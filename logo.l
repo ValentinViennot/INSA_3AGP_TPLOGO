@@ -21,6 +21,6 @@
 [ \t]+              ;
 \n                  ;
 "NAME"              return NAME;
-[a-zA-Z]{1,45}".svg" {strcpy(yylval.name,yytext); return NAME_;}
+[a-zA-Z][a-zA-Z0-9]{0,44}".svg" {strcpy(yylval.name,yytext); return NAME_;}
 
 %%
