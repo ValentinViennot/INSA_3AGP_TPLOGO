@@ -1,6 +1,8 @@
 %{
   #include <stdlib.h>
   #include <stdio.h>
+  #include <string.h>
+  
   #include "logo_type.h"
   #include "logo_functions.h"
 
