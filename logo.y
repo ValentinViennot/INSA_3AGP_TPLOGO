@@ -34,7 +34,8 @@
 FINAL:
   PROGRAM {
     printLogo($1,0);
-    writeSVG($1,"out.svg");
+    char name[] = {'o','u','t','.','s','v','g','\0'};
+    writeSVG($1,name);
     freeLogo(&$1);
   }
   | NAME NAME_ PROGRAM
