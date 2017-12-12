@@ -68,6 +68,9 @@ void printLogo(Program program, int indent) {
     case RIGHT:
       printf("RIGHT %d", program->value);
       break;
+    case SCALE:
+      printf("SCALE %d", program->value);
+      break;
     case REPEAT:
       printf("REPEAT %d [\n", program->value);
       printLogo(program->subNode, indent+1);
@@ -116,6 +119,9 @@ void writeSVGInstruction(FILE* svg, Program program, Pen* pen) {
     case RIGHT:
       rotatePen(pen,program->instruction,program->value);
       break;
+    case SCALE:
+      pen->scale = program->value;
+      break;
     case REPEAT:
       for (i=0;i<program->value;++i) {
         writeSVGInstruction(svg,program->subNode,pen);
@@ -159,6 +165,9 @@ void defineCanvas(Program program, Pen* pen, double* initX, double* initY, doubl
     case LEFT:
     case RIGHT:
       rotatePen(pen,program->instruction,program->value);
+      break;
+    case SCALE:
+      pen->scale = program->value;
       break;
     case REPEAT:
       for (i=0;i<program->value;++i) {

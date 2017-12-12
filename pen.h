@@ -14,8 +14,9 @@ typedef struct {
   int active; // Stylo posé ? ou levé (false)
   double x; // Coordonnée x du stylo
   double y; // " y "
-  double alpha; // orientation d'écriture du stylo dans le plan 2D de la feuille
-  int rgb[3]; // couleur du stylo au format RGB : int[3] {RED,GREEN,BLUE}
+  int scale; // Mise à l'échelle (facteur du FORWARD)
+  double alpha; // Orientation d'écriture du stylo dans le plan 2D de la feuille
+  int rgb[3]; // Couleur du stylo au format RGB : int[3] {RED,GREEN,BLUE}
 } Pen;
 
 /**

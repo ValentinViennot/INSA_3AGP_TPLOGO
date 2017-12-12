@@ -15,7 +15,7 @@
 
 %token NAME_
 %token VALUE DELTA
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ NAME
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ SCALE_ NAME
 
 //type de yylval
 %union {
@@ -34,7 +34,8 @@
 FINAL:
   PROGRAM {
     printLogo($1,0);
-    writeSVG($1,"out.svg");
+    char name[] = {'o','u','t','.','s','v','g','\0'};
+    writeSVG($1,name);
     freeLogo(&$1);
   }
   | NAME NAME_ PROGRAM
@@ -68,6 +69,10 @@ INSTRUCTION:
   | RIGHT_ VALUE
   {
     $$=createNode(RIGHT,$2,NULL);
+  }
+  | SCALE_ VALUE
+  {
+    $$=createNode(SCALE,$2,NULL);
   }
   | REPEAT_ VALUE '[' PROGRAM ']'
   {
