@@ -4,6 +4,7 @@ void InitPen(Pen* pen) {
   pen->active = 1;
   pen->x = 0.0;
   pen->y = 0.0;
+  pen->scale = 1;
   pen->alpha = 0.0;
   pen->rgb[0] = 0;
   pen->rgb[1] = 0;
@@ -29,6 +30,7 @@ void rotatePen(Pen* pen, Instruction sig, int dalpha) {
 }
 
 void movePen(Pen* pen, int value) {
+  value *= pen->scale;
   pen->x += (double)(value*cos(pen->alpha));
   pen->y += (double)(value*sin(pen->alpha));
 }

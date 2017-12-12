@@ -7,6 +7,7 @@ typedef enum {
   RIGHT,
   REPEAT,
   HIDE,
+  SCALE,
   DCOLOR, COLOR
 } Instruction;
 

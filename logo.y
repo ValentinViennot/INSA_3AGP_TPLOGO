@@ -15,7 +15,7 @@
 
 %token NAME_
 %token VALUE DELTA
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ NAME
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ SCALE_ NAME
 
 //type de yylval
 %union {
@@ -68,6 +68,10 @@ INSTRUCTION:
   | RIGHT_ VALUE
   {
     $$=createNode(RIGHT,$2,NULL);
+  }
+  | SCALE_ VALUE
+  {
+    $$=createNode(SCALE,$2,NULL);
   }
   | REPEAT_ VALUE '[' PROGRAM ']'
   {
