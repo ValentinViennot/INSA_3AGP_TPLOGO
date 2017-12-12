@@ -11,6 +11,8 @@
     return 1;
   }
 
+  char programName[50] = "out.svg"; 
+
 %}
 
 %token NAME_
@@ -34,19 +36,17 @@
 FINAL:
   PROGRAM {
     printLogo($1,0);
-    char name[] = {'o','u','t','.','s','v','g','\0'};
-    writeSVG($1,name);
+    writeSVG($1,programName);
     freeLogo(&$1);
-  }
-  | NAME NAME_ PROGRAM
-  {
-    printLogo($3,0);
-    writeSVG($3,$2);
-    freeLogo(&$3);
   }
 
 PROGRAM:
-  INSTRUCTION
+  NAME NAME_ PROGRAM
+  {
+    strcpy(programName,$2);
+    $$ = $3;
+  }
+  | INSTRUCTION
   {
     $$ = InitLogo();
     addNode(&$$,$1);
