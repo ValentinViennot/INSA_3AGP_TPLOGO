@@ -186,8 +186,13 @@ void writeSVG(Program program, char* name) {
     pen.alpha = 0.0;
     fprintf(svg,"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"%d\" height=\"%d\">\n",(int)(-x+sizex+2*MARGIN),(int)(-y+sizey+2*MARGIN));
     // Transformons le nom du fichier pour enlever l'extension et le mettre en majuscules
-    if ( name[0] > 96) name[0] = name[0] - 32; // Passons le premier char en majuscules s'il est en minuscules (cf. Table ASCII)
+    if ( name[0] > 96) name[0] -= 32; // On passe le premier char en majuscules s'il est en minuscules (cf. Table ASCII)
+    // retire l'extension (remplaçant le "." par une fin de chaine)
+    int i = 0;
+    while (name[++i]!='.');
+    name[i] = '\0';
     fprintf(svg,"<title>%s</title>\n",name);
+    fprintf(svg,"<desc>An SVG file generated from a LOGO file (Compilator by Valentin Viennot).</desc>\n");
     writeSVGInstruction(svg,program,&pen);
     fprintf(svg,"</svg>\n");
     fclose(svg);
