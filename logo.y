@@ -96,7 +96,6 @@ INSTRUCTION:
   }
   // Couleur
   | COLOR_ VALUE {
-    while ($2>255) $2-=255;
     $$ = createNode(COLOR,$2*10+$1,NULL);
   }
   | COLOR_ DELTA VALUE {
