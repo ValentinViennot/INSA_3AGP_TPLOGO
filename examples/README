@@ -1,26 +1,26 @@
-# crazy.logo
+# crazy.logo -> out.svg
+Testé : grammaire LOGO sans extension
 
-Test de la grammaire LOGO de base sur une forme complexe
+# flower.logo -> flower.svg
+Description : Une fleur avec un dégradé de bleu et vert
+Testé : NAME, SCALE, DELTA COLOR
 
-# flower.logo
+# ex-test.logo -> Exemple01.svg
 
-Test de NAME, SCALE et DELTA COLOR
+Testé : NAME, COLOR et SCALE
 
-# ex-math.logo
+# ex-math.logo -> Exemple02.svg
 
 Test des expressions mathématiques, doit donner la même interprétation que ex-test.logo
 
-# ex-test.logo
+# squares.logo -> squares.svg
 
-Test de NAME, COLOR et SCALE
+Test des variables.
 
-# square.logo
+# centered.logo -> centered.svg
 
-Test de COLOR et HIDE
+Test des variables, GOTO (X Y), dégradé couleurs
 
-# square-goto.logo
-
-Test de GOTO. Doit donner le même résultat que square.logo.
 
 // TODO
 

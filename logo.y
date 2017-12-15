@@ -20,8 +20,7 @@
 
 %token NAME_
 %token ENTIER VAR
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ SHOW COLOR_ SCALE_ NAME GTX GTY
-%token DIV MULT DELTA
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ SHOW COLOR_ DELTA SCALE_ NAME GTX GTY
 %token RECT POLYGON CIRCLE
 
 //type de yylval
@@ -35,7 +34,7 @@
 //type des  symboles
 %type <vname> VAR VARIABLE // char
 %type <name> NAME_ // char*
-%type <value> VALUE ENTIER COLOR_ DELTA FACTOR TERM EXPR // int
+%type <value> VALUE ENTIER COLOR_ FACTOR TERM EXPR // int
 %type <node> INSTRUCTION PROGRAM // Node*
 
 %%
@@ -99,7 +98,8 @@ INSTRUCTION:
     $$ = createNode(COLOR,$2*10+$1,NULL);
   }
   | COLOR_ DELTA VALUE {
-    $$ = createNode(DCOLOR,$2*($3*10+$1),NULL);
+    int d = ($3>0?1:-1);
+    $$ = createNode(DCOLOR,(d*(10*d*$3+$1)),NULL);
   }
   // Alias
   | RECT VALUE VALUE {
@@ -130,17 +130,20 @@ VALUE: EXPR {
     $$ = $1;
   }
 
-EXPR: EXPR DELTA TERM {
-    $$ = $1 + $2*$3;
+EXPR: EXPR '+' TERM {
+    $$ = $1 + $3;
+  }
+  | EXPR '-' TERM {
+    $$ = $1 - $3;
   }
   | TERM {
     $$ = $1;
   }
 
-TERM: TERM MULT FACTOR {
+TERM: TERM '*' FACTOR {
     $$ = $1 * $3;
   }
-  | TERM DIV FACTOR {
+  | TERM '/' FACTOR {
     $$ = $1 / $3;
   }
   | FACTOR {
@@ -150,6 +153,9 @@ TERM: TERM MULT FACTOR {
 FACTOR:
   ENTIER {
     $$ = $1;
+  }
+  | '-' FACTOR {
+    $$ = -$2;
   }
   | VARIABLE {
     $$ = var[$1-'a'];

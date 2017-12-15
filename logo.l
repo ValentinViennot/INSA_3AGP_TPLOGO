@@ -14,6 +14,7 @@
 "CIRCLE"			return CIRCLE;
 "X"					return GTX;
 "Y"					return GTY;
+"DELTA"				return DELTA;
 ("COLOR ")?"RED"    {yylval.value = 0; return COLOR_;}
 ("COLOR ")?"GREEN"  {yylval.value = 1; return COLOR_;}
 ("COLOR ")?"BLUE"   {yylval.value = 2; return COLOR_;}
@@ -22,10 +23,10 @@
 
 "["                 return '[';
 "]"                 return ']';
-"+"                 {yylval.value = 1; return DELTA;}
-"-"                 {yylval.value = -1; return DELTA;}
-"/"                 return DIV;
-"*"                 return MULT;
+"+"					return '+';
+"-"					return '-';
+"/"                 return '/';
+"*"                 return '*';
 "("     			return '(';
 ")"     			return ')';
 "="					return '=';
@@ -36,6 +37,6 @@
 [a-zA-Z][a-zA-Z0-9]{0,44}".svg" {strcpy(yylval.name,yytext); return NAME_;}
 
 [a-z]{1}			{yylval.vname = yytext[0]; return VAR;}
-[1-9][0-9]*|0     	{yylval.value = atoi(yytext); return ENTIER;}
+[1-9][0-9]*|0     {yylval.value = atoi(yytext); return ENTIER;}
 
 %%

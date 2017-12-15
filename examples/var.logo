@@ -1,6 +1,0 @@
-NAME variables.svg
-FORWARD i=100
-REPEAT 3 [
-	RIGHT 90
-	FORWARD i
-]

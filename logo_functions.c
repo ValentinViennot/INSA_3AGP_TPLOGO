@@ -32,7 +32,7 @@ void addNode(Program* program, Node* node) {
 int getColorIndex(int value)  {
   int color = (int)(value/10);
   color *= 10;
-  return (value-color);
+  return (value>color?(value-color):(color-value));
 }
 
 char* getColorName(int value)  {
