@@ -1,4 +1,4 @@
-# Compilateur LOGO simple
+# Compilateur LOGO
 
 ## Grammaire
 
@@ -29,6 +29,14 @@ Au programme initialement demandé ont été rajouté des instructions compléme
 
 ### Expressions mathématiques
 // TODO 
+
+### Variables
+// TODO (attention ! une initialisation doit être contenue dans une instruction)
+// Attention une boucle REPEAT garde la variable constante, utilisez une boucle for instead
+
+FORWARD i=100
+RIGHT 90
+FORWARD i
 
 ### NAME
 Au début du programme il est possible d'utiliser la commande "NAME [a-zA-Z][a-zA-Z0-9]{0,44}".svg"" pour choisir le nom du fichier .svg de destination.

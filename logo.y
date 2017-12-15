@@ -13,24 +13,27 @@
     return 1;
   }
 
-  char programName[50] = "out.svg"; 
+  char programName[50] = "out.svg";
+  int var[26];
 
 %}
 
 %token NAME_
-%token ENTIER DELTA
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ SCALE_ NAME GTX GTY
-%token DIV MULT
+%token ENTIER VAR
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ SCALE_ NAME GTX GTY FOR
+%token DIV MULT DELTA
 %token RECT POLYGON CIRCLE
 
 //type de yylval
 %union {
-    char name[50];
-    struct model_step* node;
-    int value;
- };
+  char name[50];
+  struct model_step* node;
+  int value;
+  char vname;
+};
 
 //type des  symboles
+%type <vname> VAR // char
 %type <name> NAME_ // char*
 %type <value> VALUE ENTIER COLOR_ DELTA FACTOR TERM EXPR // int
 %type <node> INSTRUCTION PROGRAM // Node*
@@ -145,6 +148,12 @@ TERM: TERM MULT FACTOR {
 FACTOR:
   ENTIER {
     $$ = $1;
+  }
+  | VAR {
+    $$ = var[$1-'a'];
+  }
+  | VAR '=' VALUE {
+    $$ = var[$1-'a'] = $3;
   }
   | '(' EXPR ')' {
     $$ = $2;

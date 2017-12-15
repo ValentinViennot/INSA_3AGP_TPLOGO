@@ -18,8 +18,11 @@ Test de NAME, COLOR et SCALE
 
 Test de COLOR et HIDE
 
+# square-goto.logo
+
+Test de GOTO. Doit donner le même résultat que square.logo.
+
 // TODO
 
 fichiers de test pour
-GOTO
 Aliases : RECT, POLYGON, CIRCLE

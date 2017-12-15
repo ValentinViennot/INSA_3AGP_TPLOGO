@@ -8,6 +8,7 @@
 "LEFT"              return LEFT_;
 "RIGHT"             return RIGHT_;
 "REPEAT"            return REPEAT_;
+"FOR"				return FOR;
 "SCALE"            	return SCALE_;
 "RECT"            	return RECT;
 "POLYGON"			return POLYGON;
@@ -27,12 +28,14 @@
 "*"                 return MULT;
 "("     			return '(';
 ")"     			return ')';
+"="					return '=';
 
 [ \t]+              ;
 \n                  ;
 "NAME"              return NAME;
 [a-zA-Z][a-zA-Z0-9]{0,44}".svg" {strcpy(yylval.name,yytext); return NAME_;}
 
+[a-z]{1}			{yylval.vname = yytext[0]; return VAR;}
 [1-9][0-9]*|0     	{yylval.value = atoi(yytext); return ENTIER;}
 
 %%
