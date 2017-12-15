@@ -27,6 +27,9 @@ COLORNAME : "RED"|"GREEN"|"BLUE"
 
 Au programme initialement demandé ont été rajouté des instructions complémentaires.
 
+### Expressions mathématiques
+// TODO 
+
 ### NAME
 Au début du programme il est possible d'utiliser la commande "NAME [a-zA-Z][a-zA-Z0-9]{0,44}".svg"" pour choisir le nom du fichier .svg de destination.
 Le nom du fichier servira également à definir la balise <title> du fichier .svg.
