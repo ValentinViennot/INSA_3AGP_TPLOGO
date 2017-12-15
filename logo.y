@@ -18,8 +18,9 @@
 %}
 
 %token NAME_
-%token VALUE DELTA
+%token ENTIER DELTA
 %token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ SCALE_ NAME GTX GTY
+%token DIV MULT
 %token RECT POLYGON CIRCLE
 
 //type de yylval
@@ -31,7 +32,7 @@
 
 //type des  symboles
 %type <name> NAME_ // char*
-%type <value> VALUE COLOR_ DELTA // int
+%type <value> VALUE ENTIER COLOR_ DELTA FACTOR TERM EXPR // int
 %type <node> INSTRUCTION PROGRAM // Node*
 
 %%
@@ -116,6 +117,37 @@ INSTRUCTION:
     addNode(&poly,createNode(FORWARD,$2,NULL));
     addNode(&poly,createNode(RIGHT,1,NULL));
     $$=createNode(REPEAT,360,poly);
+  }
+
+// Gestion des expressions mathématiques
+
+VALUE: EXPR {
+    $$ = $1;
+  }
+
+EXPR: EXPR DELTA TERM {
+    $$ = $1 + $2*$3;
+  }
+  | TERM {
+    $$ = $1;
+  }
+
+TERM: TERM MULT FACTOR {
+    $$ = $1 * $3;
+  }
+  | TERM DIV FACTOR {
+    $$ = $1 / $3;
+  }
+  | FACTOR {
+    $$ = $1;
+  }
+
+FACTOR:
+  ENTIER {
+    $$ = $1;
+  }
+  | '(' EXPR ')' {
+    $$ = $2;
   }
 
 %%

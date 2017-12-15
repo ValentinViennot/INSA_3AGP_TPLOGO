@@ -18,14 +18,21 @@
 ("COLOR ")?"GREEN"  {yylval.value = 1; return COLOR_;}
 ("COLOR ")?"BLUE"   {yylval.value = 2; return COLOR_;}
 "HIDE"              return HIDE_;
-[1-9][0-9]*|0       {yylval.value = atoi(yytext); return VALUE;}
+
 "["                 return '[';
 "]"                 return ']';
 "+"                 {yylval.value = 1; return DELTA;}
 "-"                 {yylval.value = -1; return DELTA;}
+"/"                 return DIV;
+"*"                 return MULT;
+"("     			return '(';
+")"     			return ')';
+
 [ \t]+              ;
 \n                  ;
 "NAME"              return NAME;
 [a-zA-Z][a-zA-Z0-9]{0,44}".svg" {strcpy(yylval.name,yytext); return NAME_;}
+
+[1-9][0-9]*|0     	{yylval.value = atoi(yytext); return ENTIER;}
 
 %%
