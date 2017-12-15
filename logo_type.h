@@ -8,7 +8,8 @@ typedef enum {
   REPEAT,
   HIDE,
   SCALE,
-  DCOLOR, COLOR
+  DCOLOR, COLOR,
+  GOTOX, GOTOY
 } Instruction;
 
 typedef struct model_step {

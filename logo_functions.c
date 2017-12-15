@@ -78,6 +78,12 @@ void printLogo(Program program, int indent) {
         printf("\t");
       printf("]");
       break;
+    case GOTOX:
+      printf("X %d", program->value);
+      break;
+    case GOTOY:
+      printf("Y %d", program->value);
+      break;
     case DCOLOR:
       printf("DELTA ");
     case COLOR:
@@ -130,6 +136,12 @@ void writeSVGInstruction(FILE* svg, Program program, Pen* pen) {
     case HIDE:
       pen->active = 1 - program->value;
       break;
+    case GOTOX:
+      pen->x = program->value;
+      break;
+    case GOTOY:
+      pen->y = program->value;
+      break;
     case COLOR:
       changePenColor(
         pen,
@@ -168,6 +180,16 @@ void defineCanvas(Program program, Pen* pen, double* initX, double* initY, doubl
       break;
     case SCALE:
       pen->scale = program->value;
+      break;
+    case GOTOX:
+      pen->x = program->value;
+      *initX = min(*initX,pen->x);
+      *sizeX = max(*sizeX,pen->x);
+      break;
+    case GOTOY:
+      pen->y = program->value;
+      *initY = min(*initY,pen->y);
+      *sizeY = max(*sizeY,pen->y);
       break;
     case REPEAT:
       for (i=0;i<program->value;++i) {

@@ -12,6 +12,8 @@
 "RECT"            	return RECT;
 "POLYGON"			return POLYGON;
 "CIRCLE"			return CIRCLE;
+"X"					return GTX;
+"Y"					return GTY;
 ("COLOR ")?"RED"    {yylval.value = 0; return COLOR_;}
 ("COLOR ")?"GREEN"  {yylval.value = 1; return COLOR_;}
 ("COLOR ")?"BLUE"   {yylval.value = 2; return COLOR_;}

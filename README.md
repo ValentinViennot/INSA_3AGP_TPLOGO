@@ -10,6 +10,7 @@ INST :   FORWARD VALUE
          LEFT VALUE  
          RIGHT VALUE  
          REPEAT VALUE '[' PROG ']'
+         (GOTOX|GOTOY) VALUE
          COLOR COLORNAME VALUE
          COLOR COLORNAME DELTA VALUE
          SCALE VALUE
@@ -38,6 +39,9 @@ Après cette instruction, tous les déplacements effectués seront S (VALUE) foi
 // TODO et TODO deltas
 
 ### HIDE
+// TODO
+
+### GOTO 
 // TODO
 
 ### Aliases

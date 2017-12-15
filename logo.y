@@ -19,7 +19,7 @@
 
 %token NAME_
 %token VALUE DELTA
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ SCALE_ NAME
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ SCALE_ NAME GTX GTY
 %token RECT POLYGON CIRCLE
 
 //type de yylval
@@ -62,29 +62,29 @@ PROGRAM:
 
 INSTRUCTION:
   // Instructions de base
-  FORWARD_ VALUE
-  {
+  FORWARD_ VALUE {
     $$=createNode(FORWARD,$2,NULL);
   }
-  | LEFT_ VALUE
-  {
+  | LEFT_ VALUE {
     $$=createNode(LEFT,$2,NULL);
   }
-  | RIGHT_ VALUE
-  {
+  | RIGHT_ VALUE {
     $$=createNode(RIGHT,$2,NULL);
   }
-  | SCALE_ VALUE
-  {
+  | SCALE_ VALUE {
     $$=createNode(SCALE,$2,NULL);
   }
-  | HIDE_ VALUE
-  {
+  | HIDE_ VALUE {
     $$=createNode(HIDE,$2,NULL);
   }
+  | GTX VALUE {
+    $$=createNode(GOTOX,$2,NULL);
+  }
+  | GTY VALUE {
+    $$=createNode(GOTOY,$2,NULL);
+  }
   // Imbrications
-  | REPEAT_ VALUE '[' PROGRAM ']'
-  {
+  | REPEAT_ VALUE '[' PROGRAM ']' {
     $$=createNode(REPEAT,$2,$4);
   }
   // Couleur
