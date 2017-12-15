@@ -90,7 +90,8 @@ void printLogo(Program program, int indent) {
       printf("COLOR %s %d",getColorName(program->value),getColorValue(program->value));
       break;
     case HIDE:
-      printf("HIDE %d", program->value);
+      if (program->value) printf("HIDE");
+      else printf("SHOW");
       break;
     default:
       printf("UNKNOWN %d", program->value);

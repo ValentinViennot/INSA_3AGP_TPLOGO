@@ -20,7 +20,7 @@
 
 %token NAME_
 %token ENTIER VAR
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ COLOR_ SCALE_ NAME GTX GTY FOR
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ SHOW COLOR_ SCALE_ NAME GTX GTY FOR
 %token DIV MULT DELTA
 %token RECT POLYGON CIRCLE
 
@@ -78,8 +78,11 @@ INSTRUCTION:
   | SCALE_ VALUE {
     $$=createNode(SCALE,$2,NULL);
   }
-  | HIDE_ VALUE {
-    $$=createNode(HIDE,$2,NULL);
+  | HIDE_ {
+    $$=createNode(HIDE,1,NULL);
+  }
+  | SHOW {
+    $$=createNode(HIDE,0,NULL);
   }
   | GTX VALUE {
     $$=createNode(GOTOX,$2,NULL);

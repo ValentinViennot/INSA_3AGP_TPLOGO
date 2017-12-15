@@ -49,7 +49,7 @@ Après cette instruction, tous les déplacements effectués seront S (VALUE) foi
 ### COLOR
 // TODO et TODO deltas
 
-### HIDE
+### HIDE / SHOW
 // TODO
 
 ### GOTO 

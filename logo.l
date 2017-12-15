@@ -19,6 +19,7 @@
 ("COLOR ")?"GREEN"  {yylval.value = 1; return COLOR_;}
 ("COLOR ")?"BLUE"   {yylval.value = 2; return COLOR_;}
 "HIDE"              return HIDE_;
+"SHOW"              return SHOW;
 
 "["                 return '[';
 "]"                 return ']';
