@@ -1,6 +1,14 @@
 #include "pen.h"
 
 void InitPen(Pen* pen) {
+  resetPen(pen);
+  pen->x0 = 0.0;
+  pen->y0 = 0.0;
+  pen->width = 0.0;
+  pen->height = 0.0;
+}
+
+void resetPen(Pen* pen) {
   pen->active = 1;
   pen->x = 0.0;
   pen->y = 0.0;

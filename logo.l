@@ -8,8 +8,6 @@
 "LEFT"              return LEFT_;
 "RIGHT"             return RIGHT_;
 "REPEAT"            return REPEAT_;
-"FOR"				return FOR;
-"TO"				return TO;
 "SCALE"            	return SCALE_;
 "RECT"            	return RECT;
 "POLYGON"			return POLYGON;

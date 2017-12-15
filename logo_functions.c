@@ -104,8 +104,8 @@ void writeSVGLine(FILE* svg, double x, double y, Pen pen) {
   fprintf(
     svg,
     "<line x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" stroke=\"#%02X%02X%02X\" />\n",
-    x,y,
-    pen.x,pen.y,
+    pen.x0+x,pen.y0+y,
+    pen.x0+pen.x,pen.y0+pen.y,
     pen.rgb[0],pen.rgb[1],pen.rgb[2]
   );
 }
@@ -163,17 +163,17 @@ void writeSVGInstruction(FILE* svg, Program program, Pen* pen) {
   writeSVGInstruction(svg,program->next,pen);
 }
 
-void defineCanvas(Program program, Pen* pen, double* initX, double* initY, double* sizeX, double* sizeY) {
+void defineCanvas(Program program, Pen* pen) {
   if (program == NULL)
     return;
   int i;
   switch (program->instruction) {
     case FORWARD:
       movePen(pen,program->value);
-      *initX = min(*initX,pen->x);
-      *initY = min(*initY,pen->y);
-      *sizeX = max(*sizeX,pen->x);
-      *sizeY = max(*sizeY,pen->y);
+      pen->x0 = min(pen->x0,pen->x);
+      pen->y0 = min(pen->y0,pen->y);
+      pen->width = max(pen->width,pen->x);
+      pen->height = max(pen->height,pen->y);
       break;
     case LEFT:
     case RIGHT:
@@ -184,39 +184,49 @@ void defineCanvas(Program program, Pen* pen, double* initX, double* initY, doubl
       break;
     case GOTOX:
       pen->x = program->value;
-      *initX = min(*initX,pen->x);
-      *sizeX = max(*sizeX,pen->x);
+      pen->x0 = min(pen->x0,pen->x);
+      pen->width = max(pen->width,pen->x);
       break;
     case GOTOY:
       pen->y = program->value;
-      *initY = min(*initY,pen->y);
-      *sizeY = max(*sizeY,pen->y);
+      pen->y0 = min(pen->y0,pen->y);
+      pen->height = max(pen->height,pen->y);
       break;
     case REPEAT:
       for (i=0;i<program->value;++i) {
-        defineCanvas(program->subNode,pen,initX,initY,sizeX,sizeY);
+        defineCanvas(program->subNode,pen);
       }
       break;
     default:
       break;
   }
-  defineCanvas(program->next,pen,initX,initY,sizeX,sizeY);
+  defineCanvas(program->next,pen);
+}
+
+void adaptPen(Program program, Pen* pen, double MARGIN) {
+  // On cherche Xmin, Xmax, Ymin, Ymax
+  defineCanvas(program,pen);
+  // Puis on en déduit les coordonnées initiales et la taille
+  pen->x0 = -pen->x0+MARGIN;
+  pen->y0 = -pen->y0+MARGIN;
+  pen->width = pen->x0+pen->width+2*MARGIN;
+  pen->height = pen->y0+pen->height+2*MARGIN;
+  // Ensuite on replace le stylo au début
+  resetPen(pen);
 }
 
 void writeSVG(Program program, char* name) {
     FILE* svg = fopen(name,"w+");
-    // write svg headers
+    // Ecrire les en-têtes du fichier .svg
     fprintf(svg,"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
-    // TODO Calculer la taille du dessin ! (et centrer le Pen ?)
+    // Définir une marge autour du dessin 
+    const double MARGIN = 1;
+    // Initialise un "stylo" pour dessiner
     Pen pen;
     InitPen(&pen);
-    double x=0,y=0,sizex=0,sizey=0;
-    const double MARGIN = 1;
-    defineCanvas(program,&pen,&x,&y,&sizex,&sizey);
-    pen.x = -x+MARGIN;
-    pen.y = -y+MARGIN;
-    pen.alpha = 0.0;
-    fprintf(svg,"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"%d\" height=\"%d\">\n",(int)(-x+sizex+2*MARGIN),(int)(-y+sizey+2*MARGIN));
+    // Calcule la taille du dessin et la position initiale du stylo
+    adaptPen(program,&pen,MARGIN);
+    fprintf(svg,"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"%d\" height=\"%d\">\n",(int)(pen.width),(int)(pen.height));
     // Transformons le nom du fichier pour enlever l'extension et le mettre en majuscules
     if ( name[0] > 96) name[0] -= 32; // On passe le premier char en majuscules s'il est en minuscules (cf. Table ASCII)
     // retire l'extension (remplaçant le "." par une fin de chaine)

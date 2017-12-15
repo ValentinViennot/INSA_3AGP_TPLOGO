@@ -20,7 +20,7 @@
 
 %token NAME_
 %token ENTIER VAR
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ SHOW COLOR_ SCALE_ NAME GTX GTY FOR TO
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ SHOW COLOR_ SCALE_ NAME GTX GTY
 %token DIV MULT DELTA
 %token RECT POLYGON CIRCLE
 
@@ -124,15 +124,6 @@ INSTRUCTION:
     addNode(&poly,createNode(RIGHT,1,NULL));
     $$ = createNode(REPEAT,360,poly);
   }
-  // | FOR VARIABLE TO VALUE '[' PROGRAM ']' {
-  //   Program test = InitLogo();
-  //   int id = $2-'a';
-  //   for (var[id];var[id]<$4;++var[id]) {
-  //     addNode(&poly,createNode(FORWARD,$2,NULL));
-  //   }
-
-  //   $$ = createNode(REPEAT,1,test);
-  // }
 
 // Gestion des expressions mathématiques
 
