@@ -1,0 +1,25 @@
+# crazy.logo
+
+Test de la grammaire LOGO de base sur une forme complexe
+
+# flower.logo
+
+Test de NAME, SCALE et DELTA COLOR
+
+# ex-math.logo
+
+Test des expressions mathématiques, doit donner la même interprétation que ex-test.logo
+
+# ex-test.logo
+
+Test de NAME, COLOR et SCALE
+
+# square.logo
+
+Test de COLOR et HIDE
+
+// TODO
+
+fichiers de test pour
+GOTO
+Aliases : RECT, POLYGON, CIRCLE
