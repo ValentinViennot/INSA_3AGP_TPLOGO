@@ -1,6 +1,14 @@
 #include "pen.h"
 
 void InitPen(Pen* pen) {
+  resetPen(pen);
+  pen->x0 = 0.0;
+  pen->y0 = 0.0;
+  pen->width = 0.0;
+  pen->height = 0.0;
+}
+
+void resetPen(Pen* pen) {
   pen->active = 1;
   pen->x = 0.0;
   pen->y = 0.0;
@@ -36,6 +44,6 @@ void movePen(Pen* pen, int value) {
 }
 
 void changePenColor(Pen* pen, int index, int value) {
-  pen->rgb[index] = value%256;
-  if (pen->rgb[index]<0) pen->rgb[index] = 0;
+  while (value<0) value += 255;
+  pen->rgb[index] = value%256;  
 }

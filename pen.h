@@ -12,8 +12,9 @@
 
 typedef struct {
   int active; // Stylo posé ? ou levé (false)
-  double x; // Coordonnée x du stylo
-  double y; // " y "
+  double x, y; // Coordonnées du stylo
+  double x0, y0; // Coordonnées initiales
+  double width, height; // Taille du dessin
   int scale; // Mise à l'échelle (facteur du FORWARD)
   double alpha; // Orientation d'écriture du stylo dans le plan 2D de la feuille
   int rgb[3]; // Couleur du stylo au format RGB : int[3] {RED,GREEN,BLUE}
@@ -21,9 +22,14 @@ typedef struct {
 
 /**
 * \brief Initialise un nouveau stylo
-* \post Les coordonnées sont à 0, le stylo se dirige vers la droite et sa couleur est le Noir.
+* \post Les coordonnées sont à 0, le stylo se dirige vers la droite et sa couleur est le Noir, les conditions initiales sont à 0.
 */
 void InitPen(Pen* pen);
+/**
+* \brief Remet à zéro un stylo, excepté ses conditions initiales
+* \post Les coordonnées sont à 0, le stylo se dirige vers la droite et sa couleur est le Noir.
+*/
+void resetPen(Pen* pen);
 
 /**
 * \post Le stylo a pivoté de dalpha degrés dans le sens défini par sig
