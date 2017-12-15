@@ -13,6 +13,11 @@ all: ${EXEC}
 
 exe: ${EXEC} clean
 
+examples: exe
+	for f in examples/*.logo; do \
+		./logo < $$f ; \
+	done
+
 ${EXEC}: $(SRCS_COMMONS:.c=.o) $(SRCS_LOGO:.c=.o) ${HDRS_COMMONS} ${HDRS_LOGO}
 	${CC} $^ -o $@ ${LDFLAGS}
 
@@ -29,7 +34,8 @@ lex.yy.c: ${EXEC}.l
 	flex $^
 
 clean:
-	@rm -f *.o
+	@rm -f *.o ${EXEC}.tab.c ${EXEC}.tab.h lex.yy.c
 
 fclean: clean
-	@rm -f ${EXEC} test ${EXEC}.tab.c ${EXEC}.tab.h lex.yy.c
+	@rm -f ${EXEC} test 
+	@rm -f *.svg
