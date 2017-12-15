@@ -20,7 +20,7 @@
 
 %token NAME_
 %token ENTIER VAR
-%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ SHOW COLOR_ SCALE_ NAME GTX GTY FOR
+%token FORWARD_ LEFT_ RIGHT_ REPEAT_ HIDE_ SHOW COLOR_ SCALE_ NAME GTX GTY FOR TO
 %token DIV MULT DELTA
 %token RECT POLYGON CIRCLE
 
@@ -33,7 +33,7 @@
 };
 
 //type des  symboles
-%type <vname> VAR // char
+%type <vname> VAR VARIABLE // char
 %type <name> NAME_ // char*
 %type <value> VALUE ENTIER COLOR_ DELTA FACTOR TERM EXPR // int
 %type <node> INSTRUCTION PROGRAM // Node*
@@ -61,46 +61,46 @@ PROGRAM:
   | PROGRAM INSTRUCTION
   {
     addNode(&$1,$2);
-    $$=$1;
+    $$ = $1;
   }
 
 INSTRUCTION:
   // Instructions de base
   FORWARD_ VALUE {
-    $$=createNode(FORWARD,$2,NULL);
+    $$ = createNode(FORWARD,$2,NULL);
   }
   | LEFT_ VALUE {
-    $$=createNode(LEFT,$2,NULL);
+    $$ = createNode(LEFT,$2,NULL);
   }
   | RIGHT_ VALUE {
-    $$=createNode(RIGHT,$2,NULL);
+    $$ = createNode(RIGHT,$2,NULL);
   }
   | SCALE_ VALUE {
-    $$=createNode(SCALE,$2,NULL);
+    $$ = createNode(SCALE,$2,NULL);
   }
   | HIDE_ {
-    $$=createNode(HIDE,1,NULL);
+    $$ = createNode(HIDE,1,NULL);
   }
   | SHOW {
-    $$=createNode(HIDE,0,NULL);
+    $$ = createNode(HIDE,0,NULL);
   }
   | GTX VALUE {
-    $$=createNode(GOTOX,$2,NULL);
+    $$ = createNode(GOTOX,$2,NULL);
   }
   | GTY VALUE {
-    $$=createNode(GOTOY,$2,NULL);
+    $$ = createNode(GOTOY,$2,NULL);
   }
   // Imbrications
   | REPEAT_ VALUE '[' PROGRAM ']' {
-    $$=createNode(REPEAT,$2,$4);
+    $$ = createNode(REPEAT,$2,$4);
   }
   // Couleur
   | COLOR_ VALUE {
     while ($2>255) $2-=255;
-    $$=createNode(COLOR,$2*10+$1,NULL);
+    $$ = createNode(COLOR,$2*10+$1,NULL);
   }
   | COLOR_ DELTA VALUE {
-    $$=createNode(DCOLOR,$2*($3*10+$1),NULL);
+    $$ = createNode(DCOLOR,$2*($3*10+$1),NULL);
   }
   // Alias
   | RECT VALUE VALUE {
@@ -109,21 +109,30 @@ INSTRUCTION:
     addNode(&rect,createNode(RIGHT,90,NULL));
     addNode(&rect,createNode(FORWARD,$3,NULL));
     addNode(&rect,createNode(RIGHT,90,NULL));
-    $$=createNode(REPEAT,2,rect);
+    $$ = createNode(REPEAT,2,rect);
   }
   | POLYGON VALUE VALUE {
     int angle = (int)(360/$2);
     Program poly = InitLogo();
     addNode(&poly,createNode(FORWARD,$3,NULL));
     addNode(&poly,createNode(RIGHT,angle,NULL));
-    $$=createNode(REPEAT,$2,poly);
+    $$ = createNode(REPEAT,$2,poly);
   }
   | CIRCLE VALUE {
     Program poly = InitLogo();
     addNode(&poly,createNode(FORWARD,$2,NULL));
     addNode(&poly,createNode(RIGHT,1,NULL));
-    $$=createNode(REPEAT,360,poly);
+    $$ = createNode(REPEAT,360,poly);
   }
+  // | FOR VARIABLE TO VALUE '[' PROGRAM ']' {
+  //   Program test = InitLogo();
+  //   int id = $2-'a';
+  //   for (var[id];var[id]<$4;++var[id]) {
+  //     addNode(&poly,createNode(FORWARD,$2,NULL));
+  //   }
+
+  //   $$ = createNode(REPEAT,1,test);
+  // }
 
 // Gestion des expressions mathématiques
 
@@ -152,14 +161,20 @@ FACTOR:
   ENTIER {
     $$ = $1;
   }
-  | VAR {
+  | VARIABLE {
     $$ = var[$1-'a'];
-  }
-  | VAR '=' VALUE {
-    $$ = var[$1-'a'] = $3;
   }
   | '(' EXPR ')' {
     $$ = $2;
+  }
+
+VARIABLE:
+  VAR {
+    $$ = $1;
+  }
+  | VARIABLE '=' VALUE {
+    var[$1-'a'] = $3;
+    $$ = $1;
   }
 
 %%
